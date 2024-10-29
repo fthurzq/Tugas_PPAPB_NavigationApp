@@ -1,12 +1,16 @@
 package com.example.bottomnavigation
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.bottomnavigation.databinding.FragmentCheckoutBinding
+import java.util.Date
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,7 +66,29 @@ class CheckoutFragment : Fragment() {
             }
 
             btnBuyTicket.setOnClickListener {
-                findNavController().navigateUp()
+                val ticketType = edtJenisTiket.text.toString()
+
+                if (ticketType.isEmpty()) {
+                    Toast.makeText(requireContext(), "Pilih tipe tiket terlebih dahulu", Toast.LENGTH_SHORT).show()
+                } else {
+                    edtJenisTiket.visibility = View.VISIBLE
+
+                    view.postDelayed({
+                        val timestamp = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(
+                            Date()
+                        )
+
+                        Toast.makeText(
+                            requireContext(),
+                            "Tiket dengan tipe $ticketType berhasil dipesan pada $timestamp",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        edtJenisTiket.visibility = View.GONE
+
+                        findNavController().navigateUp()
+                    }, 2000)
+                }
             }
         }
 
